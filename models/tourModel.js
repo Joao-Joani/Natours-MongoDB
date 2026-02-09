@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
-const validator = require('validator');
+// const validator = require('validator');
 
 const tourSchema = new mongoose.Schema(
   {
@@ -103,7 +103,6 @@ tourSchema.pre('save', function(next) {
 //   next();
 // });
 
-// QUERY MIDDLEWARE
 // tourSchema.pre('find', function(next) {
 tourSchema.pre(/^find/, function(next) {
   this.find({ secretTour: { $ne: true } });
