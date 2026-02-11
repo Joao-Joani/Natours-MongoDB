@@ -118,7 +118,7 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
 });
 
 exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
-  const year = req.params.year * 1; // 2021
+  const year = req.params.year * 1;
 
   const plan = await Tour.aggregate([
     {
@@ -159,6 +159,25 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     status: 'success',
     data: {
       plan
+    }
+  });
+});
+
+exports.getTourSurpresa = catchAsync(async (req, res, next) => {
+  const tour = await Tour.aggregate([
+    { $sample: { size: 1 } }
+  ]);
+
+  const tourData = tour[0];
+
+  if (!tourData) {
+    return next(new AppError('Nenhum tour encontrado.', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour: tourData
     }
   });
 });
